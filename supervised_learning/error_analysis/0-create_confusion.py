@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 
+
 def create_confusion_matrix(labels, logits):
     # convert one-hot to class indices
     true_labels = np.argmax(labels, axis=1)
