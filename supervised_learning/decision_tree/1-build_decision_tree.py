@@ -42,6 +42,8 @@ class Leaf(Node):
 
     def max_depth_below(self) :
         return self.depth
+    def count_nodes_below(self, only_leaves=False):
+        return 1
 
 class Decision_Tree():
     def __init__(self, max_depth=10, min_pop=1, seed=0, split_criterion="random", root=None):
