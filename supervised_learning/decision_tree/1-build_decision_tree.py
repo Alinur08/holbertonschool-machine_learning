@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
+"""
+Decision Tree Framework.
+"""
 
 import numpy as np
 
 class Node:
+    """
+    Represents an internal decision (split) node within the decision tree.
+    """
+
     def __init__(self, feature=None, threshold=None, left_child=None, right_child=None, is_root=False, depth=0):
         self.feature = feature
         self.threshold = threshold
@@ -14,6 +21,9 @@ class Node:
         self.depth = depth
 
     def max_depth_below(self) :
+        """
+        Recursively calculates the maximum absolute depth reached
+        """
 
         if self.left_child is None and self.right_child is None:
             return self.depth
@@ -23,7 +33,9 @@ class Node:
 
         return max(left_depth, right_depth)
     def count_nodes_below(self, only_leaves=False):
-
+        """
+        Recursively calculates the maximum absolute depth reached
+        """
         # If leaf-like endpoint (no children)
         left_count = self.left_child.count_nodes_below(only_leaves) if self.left_child else 0
         right_count = self.right_child.count_nodes_below(only_leaves) if self.right_child else 0
@@ -34,6 +46,9 @@ class Node:
             return 1 + left_count + right_count
 
 class Leaf(Node):
+    """
+    Represents a terminal node (leaf) of the decision tree.
+    """
     def __init__(self, value, depth=None):
         super().__init__()
         self.value = value
@@ -41,11 +56,22 @@ class Leaf(Node):
         self.depth = depth
 
     def max_depth_below(self) :
+        """
+        Returns the leaf's own depth, serving as the recursion base case.
+        """
+
         return self.depth
     def count_nodes_below(self, only_leaves=False):
+        """
+        Returns the leaf's own depth, serving as the recursion base case.
+        """
+
         return 1
 
 class Decision_Tree():
+    """
+    The orchestrator class for managing the decision tree structure.
+    """
     def __init__(self, max_depth=10, min_pop=1, seed=0, split_criterion="random", root=None):
         self.rng = np.random.default_rng(seed)
         if root:
@@ -60,7 +86,13 @@ class Decision_Tree():
         self.predict = None
 
     def depth(self) :
+        """
+        Calculates the maximum depth of the entire tree from the root.
+        """
         return self.root.max_depth_below()
 
     def count_nodes(self, only_leaves=False):
+        """
+        Counts the total number of nodes or leaves down the tree hierarchy.
+        """
         return self.root.count_nodes_below(only_leaves=only_leaves)
