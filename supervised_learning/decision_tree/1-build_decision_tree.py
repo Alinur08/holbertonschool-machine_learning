@@ -23,14 +23,18 @@ class Node:
 
         return max(left_depth, right_depth)
     def count_nodes_below(self, only_leaves=False):
-        # if this is a terminal node (no children)
+
+        # If leaf-like endpoint (no children)
         if self.left_child is None and self.right_child is None:
             return 0 if only_leaves else 1
 
         left_count = self.left_child.count_nodes_below(only_leaves) if self.left_child else 0
         right_count = self.right_child.count_nodes_below(only_leaves) if self.right_child else 0
 
-        return (0 if only_leaves else 1) + left_count + right_count
+        if only_leaves:
+            return left_count + right_count
+        else:
+            return 1 + left_count + right_count
 
 class Leaf(Node):
     def __init__(self, value, depth=None):
