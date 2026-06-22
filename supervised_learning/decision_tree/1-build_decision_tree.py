@@ -25,9 +25,6 @@ class Node:
     def count_nodes_below(self, only_leaves=False):
 
         # If leaf-like endpoint (no children)
-        if self.left_child is None and self.right_child is None:
-            return 0 if only_leaves else 1
-
         left_count = self.left_child.count_nodes_below(only_leaves) if self.left_child else 0
         right_count = self.right_child.count_nodes_below(only_leaves) if self.right_child else 0
 
