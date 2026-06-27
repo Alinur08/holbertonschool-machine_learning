@@ -119,6 +119,7 @@ class Leaf(Node):
         self.is_leaf = True
         self.depth = depth
     def update_bounds_below(self) :
+        """Pass"""
         pass 
 
     def __str__(self):
