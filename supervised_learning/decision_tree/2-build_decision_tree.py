@@ -28,23 +28,18 @@ class Node:
         return result
     def right_child_add_prefix(self, text):
         lines = text.split("\n")
-        result = "    +---> " + lines[0]
-
-        for line in lines[1:]:
-            result += "\n           " + line
-
-        return result
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            new_text += ("       " + x) + "\n"
+        return new_text
     def __str__(self):
         if self.is_root:
             text = f"root [feature={self.feature}, threshold={self.threshold}]"
         else:
             text = f"node [feature={self.feature}, threshold={self.threshold}]"
 
-        if self.left_child:
-            text += "\n" + self.left_child_add_prefix(str(self.left_child))
-
-        if self.right_child:
-            text += "\n" + self.right_child_add_prefix(str(self.right_child))
+        text += "\n" + self.left_child_add_prefix(str(self.left_child))
+        text += self.right_child_add_prefix(str(self.right_child))
 
         return text
     def max_depth_below(self) :
@@ -81,6 +76,9 @@ class Leaf(Node):
         self.value = value
         self.is_leaf = True
         self.depth = depth
+
+    def __str__(self):
+        return (f"-> leaf [value={self.value}]")
 
     def max_depth_below(self) :
         """
