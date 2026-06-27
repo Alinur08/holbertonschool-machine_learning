@@ -18,6 +18,8 @@ class Node:
         self.is_root = is_root
         self.sub_population = None
         self.depth = depth
+        self.lower = {}  # lower bounds per feature
+        self.upper = {}  # upper bounds per feature
     def left_child_add_prefix(self, text):
         """ Add prefix to left child """
         lines = text.rstrip("\n").split("\n")
