@@ -105,7 +105,11 @@ class Decision_Tree():
         self.min_pop = min_pop
         self.split_criterion = split_criterion
         self.predict = None
-
+    def __str__(self):
+        """
+        Returns a string representation of the decision tree, starting from the root node.
+        """
+        return str(self.root)
     def depth(self) :
         """
         Calculates the maximum depth of the entire tree from the root.
