@@ -18,27 +18,33 @@ class Node:
         self.is_root = is_root
         self.sub_population = None
         self.depth = depth
-    def left_child_add_prefix(self, text):
-        lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
-        for x in lines[1:]:
-            new_text += ("    |  " + x) + "\n"
-        return new_text
+    def left_child_add_prefix(self,text):
+        lines=text.split("\n")
+        new_text="    +--"+lines[0]+"\n"
+        for x in lines[1:] :
+            new_text+=("    |  "+x)+"\n"
+        return (new_text)
     def right_child_add_prefix(self, text):
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
-        for x in lines[1:]:
-            new_text += ("       " + x) + "\n"
+
+        for line in lines[1:]:
+            new_text += "       " + line + "\n"
+
         return new_text
         
     def __str__(self):
+
         if self.is_root:
             text = f"root [feature={self.feature}, threshold={self.threshold}]"
         else:
-            text = f"node [feature={self.feature}, threshold={self.threshold}]"
+            text = f"-> node [feature={self.feature}, threshold={self.threshold}]"
 
-        text += "\n" + self.left_child_add_prefix(str(self.left_child))
-        text += self.right_child_add_prefix(str(self.right_child))
+        if self.left_child:
+            text += "\n" + self.left_child_add_prefix(str(self.left_child)).rstrip()
+
+        if self.right_child:
+            text += "\n" + self.right_child_add_prefix(str(self.right_child)).rstrip()
 
         return text
     def max_depth_below(self) :
@@ -77,7 +83,7 @@ class Leaf(Node):
         self.depth = depth
 
     def __str__(self):
-        return (f"-> leaf [value={self.value}]")
+        return f"-> leaf [value={self.value}]"
 
     def max_depth_below(self) :
         """
@@ -109,10 +115,7 @@ class Decision_Tree():
         self.split_criterion = split_criterion
         self.predict = None
     def __str__(self):
-        """
-        Returns a string representation of the decision tree, starting from the root node.
-        """
-        return str(self.root)
+        return self.root.__str__()
     def depth(self) :
         """
         Calculates the maximum depth of the entire tree from the root.

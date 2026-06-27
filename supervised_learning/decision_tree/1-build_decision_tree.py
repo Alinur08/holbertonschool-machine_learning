@@ -19,28 +19,6 @@ class Node:
         self.is_root = is_root
         self.sub_population = None
         self.depth = depth
-    def left_child_add_prefix(self, text):
-        lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
-        for x in lines[1:]:
-            new_text += "    |  " + x + "\n"
-        return new_text
-    def right_child_add_prefix(self, text):
-        lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
-        for x in lines[1:]:
-            new_text += "       " + x + "\n"
-        return new_text
-    def __str__(self):
-        text = f"node [feature={self.feature}, threshold={self.threshold}]"
-
-        if self.left_child:
-            text += "\n" + self.left_child_add_prefix(str(self.left_child)).rstrip()
-
-        if self.right_child:
-            text += "\n" + self.right_child_add_prefix(str(self.right_child)).rstrip()
-
-        return text
     def max_depth_below(self) :
         """
         Recursively calculates the maximum absolute depth reached
