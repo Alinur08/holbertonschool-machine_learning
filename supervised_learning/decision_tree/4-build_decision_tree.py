@@ -25,6 +25,28 @@ class Node:
         for x in lines[1:]:
             new_text += "    |  " + x + "\n"
         return new_text
+    def update_bounds_below(self):
+        """
+        Recursively updates the upper and lower bounds for each node in the tree."""
+        if self.is_root:
+            self.upper = {0: np.inf}
+            self.lower = {0: -np.inf}
+
+        for child in [self.left_child, self.right_child]:
+
+            # Copy parent's dictionaries
+            child.upper = self.upper.copy()
+            child.lower = self.lower.copy()
+
+            if child == self.left_child:
+                # Left child: feature <= threshold
+                child.upper[self.feature] = self.threshold
+            else:
+                # Right child: feature > threshold
+                child.lower[self.feature] = self.threshold
+
+        for child in [self.left_child, self.right_child]:
+            child.update_bounds_below()
     def get_leaves_below(self):
         """
         Recursively collects all leaf nodes beneath this node."""
@@ -92,7 +114,6 @@ class Leaf(Node):
         self.is_leaf = True
         self.depth = depth
     def update_bounds_below(self) :
-        """"""
         pass 
 
     def __str__(self):
@@ -133,6 +154,10 @@ class Decision_Tree():
         self.predict = None
     def __str__(self):
         return self.root.__str__()
+    def update_bounds(self):
+        """
+        Updates the bounds of the entire tree from the root."""
+        self.root.update_bounds_below()
     def depth(self) :
         """
         Calculates the maximum depth of the entire tree from the root.
