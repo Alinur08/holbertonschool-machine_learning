@@ -18,35 +18,34 @@ class Node:
         self.is_root = is_root
         self.sub_population = None
         self.depth = depth
-    def left_child_add_prefix(self,text):
-        lines=text.split("\n")
-        new_text="    +--"+lines[0]+"\n"
-        for x in lines[1:] :
-            new_text+=("    |  "+x)+"\n"
-        return (new_text)
-    def right_child_add_prefix(self, text):
-        lines = text.split("\n")
+    def left_child_add_prefix(self, text):
+        """ Add prefix to left child """
+        lines = text.rstrip("\n").split("\n")
         new_text = "    +--" + lines[0] + "\n"
-
-        for line in lines[1:]:
-            new_text += "       " + line + "\n"
-
+        for x in lines[1:]:
+            new_text += "    |  " + x + "\n"
         return new_text
-        
+
+    def right_child_add_prefix(self, text):
+        """ Add prefix to right child """
+        lines = text.rstrip("\n").split("\n")
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            new_text += "       " + x + "\n"
+        return new_text
+
     def __str__(self):
-
         if self.is_root:
-            text = f"root [feature={self.feature}, threshold={self.threshold}]"
+            label = (
+                f"root [feature={self.feature}, threshold={self.threshold}]"
+            )
         else:
-            text = f"-> node [feature={self.feature}, threshold={self.threshold}]"
-
-        if self.left_child:
-            text += "\n" + self.left_child_add_prefix(str(self.left_child)).rstrip()
-
-        if self.right_child:
-            text += "\n" + self.right_child_add_prefix(str(self.right_child)).rstrip()
-
-        return text
+            label = (
+                f"-> node [feature={self.feature}, threshold={self.threshold}]"
+            )
+        left_str = self.left_child_add_prefix(self.left_child.__str__())
+        right_str = self.right_child_add_prefix(self.right_child.__str__())
+        return label + "\n" + left_str + right_str  # remove .rstrip("\n")
     def max_depth_below(self) :
         """
         Recursively calculates the maximum absolute depth reached
