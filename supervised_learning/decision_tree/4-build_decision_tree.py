@@ -28,27 +28,30 @@ class Node:
             new_text += "    |  " + x + "\n"
         return new_text
     def update_bounds_below(self):
-        """
-        Recursively updates the upper and lower bounds for each node in the tree."""
+        """ Update bounds below function """
         if self.is_root:
-            self.upper = {0: np.inf}
             self.lower = {0: -np.inf}
+            self.upper = {0: np.inf}
 
         for child in [self.left_child, self.right_child]:
+            if child is None:
+                continue
 
-            # Copy parent's dictionaries
-            child.upper = self.upper.copy()
+            # Copy parent bounds
             child.lower = self.lower.copy()
+            child.upper = self.upper.copy()
 
-            if child == self.left_child:
-                # Left child: feature <= threshold
-                child.upper[self.feature] = self.threshold
-            else:
-                # Right child: feature > threshold
-                child.lower[self.feature] = self.threshold
+            # Update bounds for the splitting feature
+            if self.feature is not None:
+                if child == self.left_child:
+                    child.lower[self.feature] = self.threshold
+                else:
+                    child.upper[self.feature] = self.threshold
 
+        # Recurse
         for child in [self.left_child, self.right_child]:
-            child.update_bounds_below()
+            if child is not None:
+                child.update_bounds_below()
     def get_leaves_below(self):
         """
         Recursively collects all leaf nodes beneath this node."""
