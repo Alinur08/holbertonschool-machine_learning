@@ -26,6 +26,8 @@ class Node:
             new_text += "    |  " + x + "\n"
         return new_text
     def get_leaves_below(self):
+        """
+        Recursively collects all leaf nodes beneath this node."""
         leaves = []
 
         if self.left_child:
@@ -94,6 +96,7 @@ class Leaf(Node):
         return f"-> leaf [value={self.value}]"
 
     def get_leaves_below(self):
+        """ Recursively collects all leaf nodes beneath this node."""
         return [self]
 
     def max_depth_below(self) :
@@ -133,6 +136,7 @@ class Decision_Tree():
         """
         return self.root.max_depth_below()
     def get_leaves(self):
+        """ Recursively collects all leaf nodes beneath the root node."""
         return self.root.get_leaves_below()
     def count_nodes(self, only_leaves=False):
         """
