@@ -20,18 +20,17 @@ class Node:
         self.depth = depth
     def left_child_add_prefix(self, text):
         lines = text.split("\n")
-        result = "    +---> " + lines[0]
-
-        for line in lines[1:]:
-            result += "\n    |      " + line
-
-        return result
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            new_text += ("    |  " + x) + "\n"
+        return new_text
     def right_child_add_prefix(self, text):
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
             new_text += ("       " + x) + "\n"
         return new_text
+        
     def __str__(self):
         if self.is_root:
             text = f"root [feature={self.feature}, threshold={self.threshold}]"
