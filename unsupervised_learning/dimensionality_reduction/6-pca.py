@@ -1,28 +1,31 @@
 #!/usr/bin/env python3
-"""Compute gradients for t-SNE."""
+"""Calculates the gradients of Y"""
 import numpy as np
-
 Q_affinities = __import__('5-Q_affinities').Q_affinities
 
 
 def grads(Y, P):
     """
-    Compute gradients of Y.
+    Calculates the gradients of Y
 
-    Args:
-        Y (np.ndarray): Shape (n, ndim).
-        P (np.ndarray): Shape (n, n).
+    Y is a numpy.ndarray of shape (n, ndim) containing the low
+        dimensional transformation of X
+    P is a numpy.ndarray of shape (n, n) containing the P affinities
+        of X
 
-    Returns:
-        tuple: (dY, Q)
+    Returns: (dY, Q)
+        dY is a numpy.ndarray of shape (n, ndim) containing the
+            gradients of Y
+        Q is a numpy.ndarray of shape (n, n) containing the Q
+            affinities of Y
     """
     n, ndim = Y.shape
     Q, num = Q_affinities(Y)
-    dY = np.zeros_like(Y)
-
+    PQ = P - Q
+    dY = np.zeros((n, ndim))
     for i in range(n):
-        diff = Y[i] - Y
-        weights = (P[i] - Q[i]) * num[i]
-        dY[i] = np.sum(weights[:, None] * diff, axis=0)
-
+        dY[i, :] = np.sum(
+            (PQ[:, i] * num[:, i])[:, np.newaxis] * (Y[i, :] - Y),
+            axis=0
+        )
     return dY, Q
