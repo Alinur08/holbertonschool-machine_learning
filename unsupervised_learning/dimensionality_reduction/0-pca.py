@@ -1,29 +1,26 @@
 #!/usr/bin/env python3
-"""PCA that retains a fraction of variance."""
+"""Performs PCA on a dataset"""
 import numpy as np
 
 
 def pca(X, var=0.95):
     """
-    Perform PCA on a dataset and retain a fraction of variance.
+    Performs PCA on a dataset
 
-    Args:
-        X (np.ndarray): Shape (n, d), mean-centered.
-        var (float): Fraction of variance to retain.
+    X is a numpy.ndarray of shape (n, d) where:
+        n is the number of data points
+        d is the number of dimensions in each point
+        all dimensions have a mean of 0 across all data points
+    var is the fraction of the variance that the PCA transformation
+        should maintain
 
-    Returns:
-        np.ndarray: Projection matrix W of shape (d, nd).
+    Returns: the weights matrix, W, that maintains var fraction of
+        X's original variance
+        W is a numpy.ndarray of shape (d, nd) where nd is the new
+        dimensionality of the transformed X
     """
-    cov = np.cov(X, rowvar=False)
-    eigvals, eigvecs = np.linalg.eigh(cov)
-
-    idx = np.argsort(eigvals)[::-1]
-    eigvals = eigvals[idx]
-    eigvecs = eigvecs[:, idx]
-
-    total = np.sum(eigvals)
-    cumvar = np.cumsum(eigvals) / total
-    nd = np.searchsorted(cumvar, var) + 1
-
-    W = eigvecs[:, :nd]
+    u, s, vh = np.linalg.svd(X)
+    cum_var = np.cumsum(s) / np.sum(s)
+    nd = np.argwhere(cum_var >= var)[0, 0] + 1
+    W = vh[:nd].T
     return W
