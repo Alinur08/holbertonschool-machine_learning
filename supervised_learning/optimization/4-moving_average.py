@@ -20,4 +20,3 @@ def moving_average(data, beta):
         v_corrected = v / (1 - beta**t)  # bias correction
         moving_averages.append(v_corrected)
     return moving_averages
-[A
