@@ -39,4 +39,3 @@ class RNNDecoder(tf.keras.layers.Layer):
         y = self.F(outputs)
 
         return y, s
-    
